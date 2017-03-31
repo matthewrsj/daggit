@@ -2,6 +2,8 @@
 *.o
 *.a
 *.so
+*.db
+*daggit # compiled binary
 
 # Folders
 _obj
@@ -22,3 +24,5 @@ _testmain.go
 *.exe
 *.test
 *.prof
+
+*.swp
