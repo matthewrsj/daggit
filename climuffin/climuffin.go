@@ -19,7 +19,7 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
-	"github.com/matthewrsj/daggit/cmd/daggit"
+	"github.com/matthewrsj/daggit"
 	"io/ioutil"
 	"os"
 
