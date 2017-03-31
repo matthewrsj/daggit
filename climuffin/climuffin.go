@@ -1,4 +1,4 @@
-// This file is part of daggit.
+// This file is part of climuffin.
 //
 // Foobar is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -11,7 +11,7 @@
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with daggit.  If not, see <http://www.gnu.org/licenses/>.
+// along with climuffin.  If not, see <http://www.gnu.org/licenses/>.
 
 package main
 
@@ -29,7 +29,7 @@ import (
 
 var db *gorm.DB
 
-func readInActivities(jsonfile string) []daggit.Activity {
+func readActivitiesFromJSON(jsonfile string) []daggit.Activity {
 	raw, err := ioutil.ReadFile(jsonfile)
 	if err != nil {
 		fmt.Println(err)
@@ -63,6 +63,9 @@ func runCommand(cmd string) {
 	switch cmd {
 	case "ra":
 		printAllActivities()
+	case "ri":
+		id := getID()
+		printActivityByID(id)
 	case "h":
 		help()
 	case "q":
@@ -76,21 +79,12 @@ func help() {
 	helpMsg := []string{
 		"Commands",
 		"ra: read all activities",
+		"ri: read activity by id",
 		"h:  display this message",
 		"q:  quit the program",
 	}
 	for _, s := range helpMsg {
 		fmt.Println(s)
-	}
-}
-
-func printAllActivities() {
-	activities := daggit.ReadAllActivities(db)
-	for _, a := range activities {
-		fmt.Println(a.Name)
-		fmt.Println(a.Start)
-		fmt.Println(a.End)
-		fmt.Println()
 	}
 }
 
@@ -104,8 +98,17 @@ func verifyCmd(cmd string, commands []string) error {
 	return fmt.Errorf("unknown command %s", cmd)
 }
 
+func getID() uint {
+	var id uint
+	fmt.Printf("ID: ")
+	if _, err := fmt.Scanf("%d", &id); err != nil {
+		fmt.Println(err)
+	}
+	return id
+}
+
 func main() {
-	commands := []string{"ra", "h", "q"}
+	commands := []string{"ra", "h", "q", "ri"}
 	db = daggit.OpenDB()
 	defer daggit.CloseDB(db)
 	daggit.SetupDB(db)
@@ -114,7 +117,7 @@ func main() {
 	flag.Parse()
 
 	if len(*create) != 0 {
-		activities := readInActivities(*create)
+		activities := readActivitiesFromJSON(*create)
 		for _, a := range activities {
 			if err := daggit.CreateActivity(db, a); err != nil {
 				fmt.Println(err)

@@ -51,7 +51,6 @@ func isTimeCollision(db *gorm.DB, a Activity) bool {
 func ReadActivityByID(db *gorm.DB, id uint) Activity {
 	var activity Activity
 	db.Find(&activity, id)
-	fmt.Printf("activity inside %s\n", activity.Name)
 	return activity
 }
 
