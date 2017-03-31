@@ -3,7 +3,6 @@
 *.a
 *.so
 *.db
-*daggit # compiled binary
 
 # Folders
 _obj

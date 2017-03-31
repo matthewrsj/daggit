@@ -13,8 +13,18 @@
 // You should have received a copy of the GNU General Public License
 // along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
 
-package main
+package daggit
 
-func activityIsZero(activity Activity) bool {
-	return (Activity{}) == activity
+import (
+	"time"
+
+	"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/sqlite"
+)
+
+type Activity struct {
+	gorm.Model
+	Name  string    `json:"Name"`
+	Start time.Time `json:"Start"`
+	End   time.Time `json:"End"`
 }

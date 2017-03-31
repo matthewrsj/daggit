@@ -13,18 +13,29 @@
 // You should have received a copy of the GNU General Public License
 // along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
 
-package main
+package daggit
 
 import (
-	"time"
-
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
 )
 
-type Activity struct {
-	gorm.Model
-	Start time.Time
-	End   time.Time
-	Name  string
+// Open gorm database
+func OpenDB() *gorm.DB {
+	db, err := gorm.Open("sqlite3", "daggit.db")
+	if err != nil {
+		panic("failed to connect to database")
+	}
+
+	return db
+}
+
+// Close gorm database, should be deferred right after opening
+func CloseDB(db *gorm.DB) {
+	db.Close()
+}
+
+// Set up the gorm database
+func SetupDB(db *gorm.DB) {
+	db.AutoMigrate(&Activity{})
 }
